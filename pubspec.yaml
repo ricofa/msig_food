@@ -45,6 +45,7 @@ dependencies:
   path: ^1.8.3
   url_launcher: ^6.2.3
   fancy_shimmer_image: ^2.0.3
+  sqlite3_flutter_libs: ^0.5.18
 
 dev_dependencies:
   flutter_test:

@@ -4,14 +4,14 @@ import 'package:msig_food/drift/favorite.dart';
 import 'package:msig_food/ui/food_detail_screen.dart';
 import 'package:msig_food/ui/widget/image_not_found_widget.dart';
 
-class FavPage extends StatefulWidget {
-  const FavPage({Key? key}) : super(key: key);
+class FavoriteScreen extends StatefulWidget {
+  const FavoriteScreen({Key? key}) : super(key: key);
 
   @override
-  State<FavPage> createState() => _FavPageState();
+  State<FavoriteScreen> createState() => _FavoriteScreenState();
 }
 
-class _FavPageState extends State<FavPage> {
+class _FavoriteScreenState extends State<FavoriteScreen> {
   late Database _database;
   @override
   void initState() {
@@ -29,8 +29,13 @@ class _FavPageState extends State<FavPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('List Favorite'),
+          centerTitle: true,
+          foregroundColor: Colors.white,
+          backgroundColor: const Color(0xFFE64F53),
+          title: const Text('Your Favorite', style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),),
         ),
+        backgroundColor: Colors.grey[200],
         body: FutureBuilder<List<FavoriteData>>(
             future: _database.getFavorites(),
             builder: (context, snapshot) {
@@ -61,6 +66,8 @@ class _FavPageState extends State<FavPage> {
                       child: Container(
                         margin: const EdgeInsets.all(8.0),
                         child: Card(
+                          elevation: 0,
+                          color: Colors.white,
                           child: Container(
                             margin: const EdgeInsets.all(8.0),
                             child: Row(
@@ -90,7 +97,7 @@ class _FavPageState extends State<FavPage> {
                                   ],
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.delete),
+                                  icon: const Icon(Icons.delete, color: Colors.red,),
                                   onPressed: () async {
                                     await _database.deleteFavorite(fav[index].idFood);
                                     setState(() {

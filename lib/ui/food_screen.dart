@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:msig_food/bloc/food_bloc/food_bloc.dart';
 import 'package:msig_food/drift/favorite.dart';
 import 'package:msig_food/model/food_model.dart';
-import 'package:drift/drift.dart' as drift;
+import 'package:msig_food/ui/favorite_screen.dart';
 import 'package:msig_food/ui/food_detail_screen.dart';
 import 'package:msig_food/ui/widget/image_not_found_widget.dart';
 
@@ -27,7 +27,7 @@ class _FoodScreenState extends State<FoodScreen> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _database.close();
     super.dispose();
   }
@@ -35,13 +35,39 @@ class _FoodScreenState extends State<FoodScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Container(),
+      appBar: AppBar(
+          backgroundColor: const Color(0xFFE64F53),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FavoriteScreen()),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.favorite,
+                    color: Colors.white,
+                  )),
+            )
+          ],
+          title: const Text(
+            'MSIG Food',
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
+          )),
+      body: Container(
+          color: Colors.grey[200],
+          child: _buildListFood()),
     );
   }
 
   Widget _buildListFood() {
     return Container(
+      // color: Colors.grey[200],
       margin: const EdgeInsets.all(8.0),
       child: BlocProvider(
         create: (_) => _foodBloc,
@@ -91,6 +117,8 @@ class _FoodScreenState extends State<FoodScreen> {
           child: Container(
             margin: const EdgeInsets.all(8.0),
             child: Card(
+              elevation: 0,
+              color: Colors.white,
               child: Container(
                 margin: const EdgeInsets.all(8.0),
                 child: Row(
@@ -117,26 +145,6 @@ class _FoodScreenState extends State<FoodScreen> {
                         ),
                       ],
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.favorite_border_outlined),
-                      onPressed: () async {
-                        const snackBar = SnackBar(
-                          backgroundColor: Colors.green,
-                          content: Text('Save favorite success!'),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        final entity = FavoriteCompanion(
-                            idFood: drift.Value(model.meals![index].idMeal!),
-                            image:
-                            drift.Value(model.meals![index].strMealThumb!),
-                            title: drift.Value(model.meals![index].strMeal!),
-                            category:
-                            drift.Value(model.meals![index].strCategory!),
-                            area: drift.Value(model.meals![index].strArea!));
-
-                        _database.insertFavorite(entity);
-                      },
-                    )
                   ],
                 ),
               ),
